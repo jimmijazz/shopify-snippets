@@ -1,0 +1,37 @@
+
+{% comment %}
+Shows a random product from within a collection. 
+Caveats - this won't be the best approach for large collections since all the products have to be loaded by liquid
+in order for us to retrieve just one. I would use Javascript for collections any larger than 50 products.
+
+Randomization approach taken from here - https://www.131-studio.com/blogs/shopify-conversion/generate-random-numbers-using-liquid-shopify
+Illustration (may be taken down at any time) https://bitossi-wholesale-test-store.myshopify.com/collections/random-item
+{% endcomment %}
+
+
+<i>Note: product titles are sequential. They're just set that way to illustrate they are different products</i>
+{% assign min = 0 %}
+{% assign max = collection.products_count %}
+{% assign diff = max | minus: min %}
+{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
+
+<p>Min: {{ min }} </p>
+<p>Max (collection length): {{ max }} </p>
+
+<p>Random number: {{ randomNumber }} </p>
+{% paginate collection.products by 250 %}
+
+<p>Random Product:</p>
+{{ collection.products[randomNumber].title }}
+
+<div data-section-id="{{ section.id }}" data-section-type="collection-template" data-sort-enabled="{{ section.settings.collection_sort_enable }}" data-tags-enabled="{{ section.settings.collection_tag_enable }}">
+  <header class="grid">
+    <h1 class="grid__item small--text-center {% if section.settings.collection_sort_enable or section.settings.collection_tag_enable %}medium-up--one-third{% endif %}">{% if current_tags.size > 0 %}{{ current_tags.first }}{% else %}{{ collection.title }}{% endif %}</h1>
+  </header>
+  <div class="grid grid--uniform" role="list">
+    {% assign product = collection.products[randomNumber] %}
+        {% assign grid_item_width = 'medium-up--one-third small--one-whole' %}
+      {% include 'product-grid-item' %}
+    </div>
+ </div>
+{% endpaginate %}
