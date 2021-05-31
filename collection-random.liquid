@@ -1,5 +1,8 @@
 
 {% comment %}
+NOTE: WOULDN't SUGGEST USING THIS IN PRODUCTION
+Shopify will cache the date result, even using different time formats. So don't expect results to update with every refresh.
+
 Shows a random product from within a collection. 
 Caveats - this won't be the best approach for large collections since all the products have to be loaded by liquid
 in order for us to retrieve just one. I would use Javascript for collections any larger than 50 products.
